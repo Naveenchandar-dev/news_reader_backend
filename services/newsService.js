@@ -2,13 +2,8 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-// Your NewsAPI key
-const API_KEY = '823dc80eb4af4afea8ec1bf696ea0671';
-
-
-
 const fetchNews = async () => {
-  const url = `https://newsapi.org/v2/everything?q=India&apiKey=${API_KEY}`;
+  const url = `https://newsapi.org/v2/everything?q=India&apiKey=${process.env.API_KEY}`;
 
   try {
       const response = await axios.get(url);
@@ -17,12 +12,8 @@ const fetchNews = async () => {
       // Iterate through the articles and display combined content
       await articles.forEach(async (article) => {
           const combinedContent = `${article.description} ${article.content}`;
-          console.log(`Title: ${article.title}`);
-          console.log(`Content: ${combinedContent}`);
-          
           // Optionally fetch full content from the article URL
           const fullContent = await fetchFullArticle(article.url);
-          console.log(`Full Content: ${fullContent}`);
       });
 
       return articles;
@@ -48,18 +39,6 @@ const fetchFullArticle = async (articleUrl) => {
   }
 };
 
-
-
-// const fetchNews = async () => {
-// //   const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`;
-// //   const url = `https://newsapi.org/v2/everything?q=latest&apiKey=${API_KEY}`;
-// const url = `https://newsapi.org/v2/everything?q=India&apiKey=${API_KEY}`;
-
-
-  
-//   const response = await axios.get(url);
-//   return response.data.articles;
-// };
 
 module.exports = {
   fetchNews,
